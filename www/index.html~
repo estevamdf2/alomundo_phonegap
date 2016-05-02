@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Required meta tags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- Color theme for statusbar -->
+    <meta name="theme-color" content="#2196f3">
+    <!-- Your app title -->
+    <title>My App</title>
+    <!-- Path to Framework7 Library CSS, Material Theme -->
+    <link rel="stylesheet" href="framework7/css/framework7.material.min.css">
+    <!-- Path to Framework7 color related styles, Material Theme -->
+    <link rel="stylesheet" href="framework7/css/framework7.material.colors.min.css">
+    <!-- Path to your custom app styles correção do link para framework7/css/my-app.css-->
+    <link rel="stylesheet" href="framework7/css/my-app.css">
+	<style type="text/css">
+		.item-text{
+			max-width:150px;
+		}
+		
+	</style>
+  </head>
+  <body class="theme-black">
+    <!-- Views -->
+    <div class="views" >
+      <!-- Your main view, should have "view-main" class -->
+      <div class="view view-main">
+        <!-- Pages container, because we use fixed navbar and toolbar, it has additional appropriate classes-->
+        <div class="pages navbar-fixed toolbar-fixed">
+          <!-- Page, "data-page" contains page name -->
+          <div data-page="index" class="page">
+ 
+            <!-- Top Navbar. In Material theme it should be inside of the page-->
+            <div class="navbar">
+              <div class="navbar-inner">
+                <div class="center">DevMedia - Tarefas</div>
+              </div>
+            </div>
+ 
+            <!-- Bottom Toolbar. In Material theme it should be inside of the page-->
+            <div class="toolbar">
+              <div class="toolbar-inner">
+                <!-- Toolbar links -->
+                <a href="#" class="link">Link 1</a>
+                <a href="#" class="link">Link 2</a>
+              </div>
+            </div>
+ 
+            <!-- Scrollable page content -->
+            <div class="page-content">
+				<div class="content-block-title">Lista de tarefas</div>
+					<div class='list-block media-list' id='item-tarefa'>
+					 <ul>
+						<li style="display:block" id='primeiro'>
+							<label class="label-checkbox item-content">
+								<input type="checkbox" name="my-checkbox" class='check-tarefa' id='tarefa0'>
+								  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+								  <div class="item-inner">
+									  <div class="item-title-row">
+										<div class="item-title">Facebook</div>
+											<div class="item-after">
+												<a href="#" class="button button-fill button-raised btn-ver"">
+													<img src="img/eye.png" />
+												</a>
+												<div class="item-after">
+													<a href="#" class="button button-fill button-raised btn-remover" style="padding-top:5px">
+														<img src="img/remove.png" />
+													</a>
+												</div>
+											</div>
+										</div>
+										<div class="item-text"></div>
+									</div>
+							</label>
+						</li>
+					  </ul>
+					  </div>
+			
+				<div class="content-block">	
+					<div class="list-block">
+						<div class="item-content">
+						<div class="item-inner">
+								<div class="item-input">
+									  <input id="new-tarefa" type="text" placeholder="Nova tarefa...">
+								</div>
+						</div>
+					</div>
+					
+        		    <div class="item-content">
+						<div class="item-inner">
+							<div class="item-input">
+							  <textarea id='descricao' placeholder="Descrição ...."></textarea>
+						  </div>
+						</div>
+    				</div>
+				 </div>
+				
+					 Restam <span id="count"></span> chars.
+				
+                    <a href="#" class="button button-raised button-fill" onclick='criarNovaTarefa()'>Add tarefa</a>
+				</div>
+            </div>
+          </div>
+        </div>
+	</div>
+</div>
+              <!-- Link to another page -->
+              <a href="about.html">About app</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library JS-->
+	<!-- cordova js e gerado qdo o projeto for compilado -->
+	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/jquery-2.2.3.js"></script>
+	
+	<!-- contar caracteres de campo texto -->
+	<script type="text/javascript" src="js/jquery.simplyCountable.js"></script>
+	
+	<script type="text/javascript" src="framework7/js/framework7.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="framework7/js/my-app.js"></script>
+     <script type="text/javascript">
+            //app.initialize();
+			
+			$(document).ready(function () {
+				$('#descricao ').simplyCountable({
+					counter:            '#count',
+					countType:          'characters',
+					maxCount:           60,
+					strictMax:          true, //restringir apos o maximo
+					countDirection:     'down',
+					
+				});
+				
+				configBotoesAcao ();
+			});
+
+			//Utilização de mensagens via harware
+			function showAlert() {
+				
+				navigator.notification.confirm(
+					'You are the winner!',  // message
+					null,         // callback
+					'Game Over',            // title
+					['Restart', 'Exit']                  // buttonName
+				);
+			}
+
+            function criarNovaTarefa(){
+                
+				var tarefa = {};
+				
+				//var descricao = prompt("Digite a tarefa!", "");
+				var texto = $('#new-tarefa').val();
+				var descricao  = $('#descricao').val();
+				
+				if(texto != null){
+					//trim() não permite a inclusão de tarefas vazias
+					if(texto.trim() == ''){
+						//alert("A tarefa não pode estar vazia!");
+						/*
+						usando alerta nativo pelo framework 7
+						segundo parametro e o titulo por padrão texto
+						'framework7'
+						*/
+						myApp.alert("A tarefa não pode estar vazia!", 'Alerta',limparCampos); 
+					} else{
+						tarefa = {check: false, texto: texto, descricao: descricao}
+						addItemLista(tarefa);
+						//resetando o valor do campo para vazio
+						
+					}
+					limparCampos(); 
+				} 
+	         }
+			 
+			 var idItem = 0;
+			 function addItemLista(tarefa){
+				<!-- com $ acessa a div item-tarefa e a estrutura do li -->
+				<!-- clone cópia a estrutura atual e appendTo adiciona o item neste clone-->
+				<!-- removeAttr remove o id do elemento li -->
+				idItem += 1; 
+				var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul');
+				<!-- encontra o atributo pela classe e atribui o id incrementando mais um -->
+				clone.find('.check-tarefa').attr('id','tarefa' +idItem).prop('checked', tarefa.check); 
+				// mudar o titulo 
+				clone.find('.item-title').text(tarefa.texto);
+				clone.find('.item-text').text(tarefa.descricao);
+				
+				
+				//configura o botão ver para cada item na lista
+				configBotoesAcao();
+				
+			 }
+			 
+			 function configBotoesAcao(){
+				  //each itera sobre cada array
+				  $('#item-tarefa li').each(function () {
+					//Recuperando os Ids das tarefas
+					var id = $(this).find('.check-tarefa').attr('id');
+					$(this).find('.btn-ver').unbind('click').click(function () {
+						// siblings mapeia todas as funções no mesmo nível do seletor
+						var texto = $('#' +id).siblings('.item-inner').find('.item-title').text();
+						var descricao = $('#' +id).siblings('.item-inner').find('.item-text').text();
+						
+						//mostrando o texto no alerta
+						myApp.alert(descricao, texto);
+						
+					}); 
+					
+					$(this).find('.btn-remover').unbind('click').click(function () {
+						removerItem(id);
+					});
+					
+				  });
+			 }
+			 
+			 function removerItem(idItem){
+				myApp.confirm("Tem certeza que deseja remover esta tarefa?", "Remover Tarefa", function () {
+					//parents busca o pai dentro desta hierarquia
+					$("#"+idItem).parents("li").remove();
+				});
+			 }
+			 
+			 function limparCampos(){
+				$('#new-tarefa').val('').focus();
+				$('#descricao').val('');
+			 }
+			 
+        </script>
+
+  </body>
+</html> 
