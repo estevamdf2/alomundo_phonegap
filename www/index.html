@@ -53,7 +53,7 @@
 				<div class="content-block-title">Lista de tarefas</div>
 					<div class='list-block media-list' id='item-tarefa'>
 					 <ul>
-						<li style="display:block" id='primeiro'>
+						<li style="display:none" id='primeiro'>
 							<label class="label-checkbox item-content">
 								<input type="checkbox" name="my-checkbox" class='check-tarefa' id='tarefa0'>
 								  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
@@ -65,7 +65,7 @@
 													<img src="img/eye.png" />
 												</a>
 												<div class="item-after">
-													<a href="#" class="button button-fill button-raised btn-remover" style="padding-top:5px">
+													<a href="#" class="button button-fill button-raised btn-remover color-red" style="padding-top:5px">
 														<img src="img/remove.png" />
 													</a>
 												</div>
@@ -126,6 +126,9 @@
     <script type="text/javascript" src="framework7/js/my-app.js"></script>
      <script type="text/javascript">
             //app.initialize();
+			var myApp = new Framework7({
+			  material: true
+			}); 
 			
 			$(document).ready(function () {
 				$('#descricao ').simplyCountable({
@@ -184,18 +187,31 @@
 				<!-- com $ acessa a div item-tarefa e a estrutura do li -->
 				<!-- clone cópia a estrutura atual e appendTo adiciona o item neste clone-->
 				<!-- removeAttr remove o id do elemento li -->
+				<!-- show() mostrar elemento none -->
 				idItem += 1; 
-				var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul');
+				var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul').show();
 				<!-- encontra o atributo pela classe e atribui o id incrementando mais um -->
 				clone.find('.check-tarefa').attr('id','tarefa' +idItem).prop('checked', tarefa.check); 
 				// mudar o titulo 
 				clone.find('.item-title').text(tarefa.texto);
 				clone.find('.item-text').text(tarefa.descricao);
-				
-				
+							
 				//configura o botão ver para cada item na lista
 				configBotoesAcao();
+				mensagemTarefaAdicionada();
 				
+			 }
+			 
+			 function mensagemTarefaAdicionada(){
+				myApp.addNotification({
+				title: 'Tarefa adicionada com sucesso!',
+				hold: 2000,
+					button: {
+						text: 'Fechar',
+						color: 'red'
+					},
+					
+				});
 			 }
 			 
 			 function configBotoesAcao(){
