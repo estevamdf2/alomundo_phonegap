@@ -19,10 +19,13 @@
 		.item-text{
 			max-width:150px;
 		}
+		.item-completado{
+			text-decoration:line-through;
+		}
 		
 	</style>
   </head>
-  <body class="layout-dark">
+  <body class="theme-red">
     <!-- Views -->
     <div class="views" >
       <!-- Your main view, should have "view-main" class -->
@@ -53,6 +56,17 @@
 				<div class="content-block-title">Lista de tarefas</div>
 					<div class='list-block media-list' id='item-tarefa'>
 					 <ul>
+						<li id='none-item'>
+							<label class="label-checkbox item-content">
+								
+								  <div class="item-inner">
+									  <div class="item-title-row">
+										<div class="item-title color-orange">Nenhum item adicionado</div>
+											
+										</div>
+								   </div>
+							</label>
+						</li>
 						<li style="display:none" id='primeiro'>
 							<label class="label-checkbox item-content">
 								<input type="checkbox" name="my-checkbox" class='check-tarefa' id='tarefa0'>
@@ -212,10 +226,24 @@
 					},
 					
 				});
+				
+				<!-- removendo titulo nenhum item -->
+				$('#none-item').hide();
+				
 			 }
 			 
 			 function configBotoesAcao(){
-				  //each itera sobre cada array
+				 
+				$('input[name=my-checkbox]').change(function () {
+					if($(this).is(':checked')){
+						$(this).siblings('.item-inner').addClass('item-completado');
+					} else{
+						$(this).siblings('.item-inner').removeClass('item-completado');
+					}	
+									
+				});
+
+				 //each itera sobre cada array
 				  $('#item-tarefa li').each(function () {
 					//Recuperando os Ids das tarefas
 					var id = $(this).find('.check-tarefa').attr('id');
@@ -240,7 +268,13 @@
 				myApp.confirm("Tem certeza que deseja remover esta tarefa?", "Remover Tarefa", function () {
 					//parents busca o pai dentro desta hierarquia
 					$("#"+idItem).parents("li").remove();
+					<!-- Ao remover todos os itens mostra a mensagem novamente -->
+					if($('#item-tarefa li').length <= 2){
+						$('#none-item').show();
+					}
+					
 				});
+				
 			 }
 			 
 			 function limparCampos(){
