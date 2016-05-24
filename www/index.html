@@ -19,10 +19,13 @@
 		.item-text{
 			max-width:150px;
 		}
+		.item-completado{
+			text-decoration: line-through;
+		}
 		
 	</style>
   </head>
-  <body class="layout-dark">
+  <body class="theme-green">
     <!-- Views -->
     <div class="views" >
       <!-- Your main view, should have "view-main" class -->
@@ -43,7 +46,7 @@
             <div class="toolbar">
               <div class="toolbar-inner">
                 <!-- Toolbar links -->
-                <a href="#" class="link">Link 1</a>
+                <link href="about.html" class="link">Link 1>
                 <a href="#" class="link">Link 2</a>
               </div>
             </div>
@@ -53,7 +56,16 @@
 				<div class="content-block-title">Lista de tarefas</div>
 					<div class='list-block media-list' id='item-tarefa'>
 					 <ul>
-						<li style="display:block" id='primeiro'>
+					 	<li id="none-item">
+					 		<label class="label-checkbox item-content">
+								<div class="item-inner">
+								  <div class="item-title-row">
+									<div class="color-orange item-title">Nenhum item adicionado...</div>
+						    	  </div>
+						    	</div>
+							</label>
+					 	</li>
+						<li style="display:none" id='primeiro'>
 							<label class="label-checkbox item-content">
 								<input type="checkbox" name="my-checkbox" class='check-tarefa' id='tarefa0'>
 								  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
@@ -61,7 +73,7 @@
 									  <div class="item-title-row">
 										<div class="item-title">Facebook</div>
 											<div class="item-after">
-												<a href="#" class="button button-fill button-raised btn-ver"">
+												<a href="#" class="button button-fill button-raised btn-ver">
 													<img src="img/eye.png" />
 												</a>
 												<div class="item-after">
@@ -76,7 +88,7 @@
 							</label>
 						</li>
 					  </ul>
-					  </div>
+			    </div>
 			
 				<div class="content-block">	
 					<div class="list-block">
@@ -181,24 +193,45 @@
 			 
 			 var idItem = 0;
 			 function addItemLista(tarefa){
-				<!-- com $ acessa a div item-tarefa e a estrutura do li -->
-				<!-- clone cópia a estrutura atual e appendTo adiciona o item neste clone-->
-				<!-- removeAttr remove o id do elemento li -->
+				//com $ acessa a div item-tarefa e a estrutura do li
+				//clone cópia a estrutura atual e appendTo adiciona o item neste clone
+				//removeAttr remove o id do elemento li
 				idItem += 1; 
-				var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul');
-				<!-- encontra o atributo pela classe e atribui o id incrementando mais um -->
+				var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul').show();
+				//encontra o atributo pela classe e atribui o id incrementando mais um
 				clone.find('.check-tarefa').attr('id','tarefa' +idItem).prop('checked', tarefa.check); 
 				// mudar o titulo 
 				clone.find('.item-title').text(tarefa.texto);
 				clone.find('.item-text').text(tarefa.descricao);
 				
-				
+
 				//configura o botão ver para cada item na lista
 				configBotoesAcao();
+				myApp.addNotification({
+					title: 'Tarefa adicionada com sucesso!',
+					hold: 6000,
+					button: {
+						text: 'Fechar',
+						color: 'red'
+					}
+				});
+
+				$('#none-item').hide();
 				
 			 }
 			 
 			 function configBotoesAcao(){
+				  
+				$('input[name=my-checkbox]').change(function (){
+					if($(this).is(':checked')){
+						$(this).siblings('.item-inner').addClass('item-completado')		
+				} else{
+						$(this).siblings('.item-inner').removeClass('item-completado')
+				}
+				
+
+				})
+
 				  //each itera sobre cada array
 				  $('#item-tarefa li').each(function () {
 					//Recuperando os Ids das tarefas
@@ -209,7 +242,7 @@
 						var descricao = $('#' +id).siblings('.item-inner').find('.item-text').text();
 						
 						//mostrando o texto no alerta
-						myApp.alert(descricao, texto);
+						myApp.alert(descricao, texto,limparCampos);
 						
 					}); 
 					
@@ -224,6 +257,10 @@
 				myApp.confirm("Tem certeza que deseja remover esta tarefa?", "Remover Tarefa", function () {
 					//parents busca o pai dentro desta hierarquia
 					$("#"+idItem).parents("li").remove();
+					//alert($('#item-tarefa li').lenght);
+					if($('#item-tarefa li').lenght <=2){
+						$('#none-item').show();
+					}
 				});
 			 }
 			 
@@ -233,6 +270,5 @@
 			 }
 			 
         </script>
-
-  </body>
+	</body>
 </html> 
