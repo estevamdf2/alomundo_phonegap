@@ -20,11 +20,12 @@
 			max-width:150px;
 		}
 		.item-completado{
-			text-decoration: line-through;
+			text-decoration:line-through;
 		}
 		
 	</style>
   </head>
+
   <body class="theme-green">
     <!-- Views -->
     <div class="views" >
@@ -56,7 +57,7 @@
 				<div class="content-block-title">Lista de tarefas</div>
 					<div class='list-block media-list' id='item-tarefa'>
 					 <ul>
-					 	<li id="none-item">
+						<li id="none-item">
 					 		<label class="label-checkbox item-content">
 								<div class="item-inner">
 								  <div class="item-title-row">
@@ -65,6 +66,7 @@
 						    	</div>
 							</label>
 					 	</li>
+
 						<li style="display:none" id='primeiro'>
 							<label class="label-checkbox item-content">
 								<input type="checkbox" name="my-checkbox" class='check-tarefa' id='tarefa0'>
@@ -77,7 +79,7 @@
 													<img src="img/eye.png" />
 												</a>
 												<div class="item-after">
-													<a href="#" class="button button-fill button-raised btn-remover" style="padding-top:5px">
+													<a href="#" class="button button-fill button-raised btn-remover color-red" style="padding-top:5px">
 														<img src="img/remove.png" />
 													</a>
 												</div>
@@ -138,6 +140,9 @@
     <script type="text/javascript" src="framework7/js/my-app.js"></script>
      <script type="text/javascript">
             //app.initialize();
+			var myApp = new Framework7({
+			  material: true
+			}); 
 			
 			$(document).ready(function () {
 				$('#descricao ').simplyCountable({
@@ -193,6 +198,7 @@
 			 
 			 var idItem = 0;
 			 function addItemLista(tarefa){
+
 				//com $ acessa a div item-tarefa e a estrutura do li
 				//clone cópia a estrutura atual e appendTo adiciona o item neste clone
 				//removeAttr remove o id do elemento li
@@ -203,36 +209,41 @@
 				// mudar o titulo 
 				clone.find('.item-title').text(tarefa.texto);
 				clone.find('.item-text').text(tarefa.descricao);
-				
 
 				//configura o botão ver para cada item na lista
 				configBotoesAcao();
-				myApp.addNotification({
-					title: 'Tarefa adicionada com sucesso!',
-					hold: 6000,
-					button: {
-						text: 'Fechar',
-						color: 'red'
-					}
-				});
-
+				mensagemTarefaAdicionada();
 				$('#none-item').hide();
 				
 			 }
 			 
-			 function configBotoesAcao(){
-				  
-				$('input[name=my-checkbox]').change(function (){
-					if($(this).is(':checked')){
-						$(this).siblings('.item-inner').addClass('item-completado')		
-				} else{
-						$(this).siblings('.item-inner').removeClass('item-completado')
-				}
+			 function mensagemTarefaAdicionada(){
+				myApp.addNotification({
+				title: 'Tarefa adicionada com sucesso!',
+				hold: 2000,
+					button: {
+						text: 'Fechar',
+						color: 'red'
+					},
+					
+				});
+			  }
 				
+				
+			 
+			 function configBotoesAcao(){
 
-				})
+				$('input[name=my-checkbox]').change(function () {
+					if($(this).is(':checked')){
+						$(this).siblings('.item-inner').addClass('item-completado');
+					} else{
+						$(this).siblings('.item-inner').removeClass('item-completado');
+					}	
+									
+				});
 
-				  //each itera sobre cada array
+				 //each itera sobre cada array
+
 				  $('#item-tarefa li').each(function () {
 					//Recuperando os Ids das tarefas
 					var id = $(this).find('.check-tarefa').attr('id');
@@ -257,12 +268,14 @@
 				myApp.confirm("Tem certeza que deseja remover esta tarefa?", "Remover Tarefa", function () {
 					//parents busca o pai dentro desta hierarquia
 					$("#"+idItem).parents("li").remove();
-					//alert($('#item-tarefa li').lenght);
-					if($('#item-tarefa li').lenght <=2){
-						$('#none-item').show();
-					}
-				});
-			 }
+
+					//Ao remover todos os itens mostra a mensagem novamente
+
+					if($('#item-tarefa li').length <= 2){
+							$('#none-item').show();
+						}
+					});
+			  }
 			 
 			 function limparCampos(){
 				$('#new-tarefa').val('').focus();
