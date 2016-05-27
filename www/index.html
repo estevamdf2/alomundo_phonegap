@@ -55,6 +55,12 @@
             <!-- Scrollable page content -->
             <div class="page-content">
 				<div class="content-block-title">Lista de tarefas</div>
+				<div class="row">
+				   <div class="col-50">
+				    <a href="#" id='remove-all' class="button button-fill button-red color-red" disabled>Remover todos</a>
+				  </div>
+				  </div>        
+
 					<div class='list-block media-list' id='item-tarefa'>
 					 <ul>
 						<li id="none-item">
@@ -113,8 +119,9 @@
 				
 					 Restam <span id="count"></span> chars.
 				
-                    <a href="#" class="button button-raised button-fill" onclick='criarNovaTarefa()'>Add tarefa</a>
-				</div>
+	                    <a href="#" class="button button-fill color-green" onclick='criarNovaTarefa()'>Add tarefa</a>
+	            
+				</div
             </div>
           </div>
         </div>
@@ -236,10 +243,11 @@
 				$('input[name=my-checkbox]').change(function () {
 					if($(this).is(':checked')){
 						$(this).siblings('.item-inner').addClass('item-completado');
+
 					} else{
 						$(this).siblings('.item-inner').removeClass('item-completado');
-					}	
-									
+					}
+						checkBoxesChecked();
 				});
 
 				 //each itera sobre cada array
@@ -263,6 +271,19 @@
 					
 				  });
 			 }
+
+			 function checkBoxesChecked(){
+
+			 	if ($('input[name=my-checkbox]:checked').length > 0) {
+						//desabilita o atributo disabled
+						$('#remove-all').removeAttr('disabled');	
+
+					} else{
+						//habilita o atributo disabled
+						$('#remove-all').attr('disabled',true);	
+
+					}
+			 }
 			 
 			 function removerItem(idItem){
 				myApp.confirm("Tem certeza que deseja remover esta tarefa?", "Remover Tarefa", function () {
@@ -274,7 +295,9 @@
 					if($('#item-tarefa li').length <= 2){
 							$('#none-item').show();
 						}
+						checkBoxesChecked();
 					});
+
 			  }
 			 
 			 function limparCampos(){
