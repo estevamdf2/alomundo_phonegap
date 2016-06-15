@@ -153,11 +153,11 @@
 
 			var idItem = 0;
 			var tarefas = [];
-			
 
 
 			$(document).ready(function () {
 				initLocalStorage();
+				
 				configBotoesAcao ();
 				$('#descricao ').simplyCountable({
 					counter:            '#count',
@@ -185,8 +185,15 @@
 					localStorage.setItem("tarefas", JSON.stringify(tarefas));
 				} else{
 					tarefas = JSON.parse(localStorage.getItem("tarefas"));
-					alert(tarefas.length);
+					
 				}
+				initListaTarefas();
+			}
+
+			function initListaTarefas(){
+				$.each(tarefas, function(){
+					addItemLista(this, $(this).attr("id"));
+				});
 			}
 
 			//Utilização de mensagens via harware
@@ -221,37 +228,43 @@
 					} else{
 						tarefa = {check: false, texto: texto, descricao: descricao}
 							tarefas.push(tarefa);
-							alert(tarefas.length);
+							
 							//Stringify pega um objeto qualquer e o transforma em String
 							
-							localStorage.setItem('tarefas', JSON.stringify(tarefas));
-							
-						addItemLista(tarefa);
+						addItemLista(tarefa, null);
 						//resetando o valor do campo para vazio
-						
+						localStorage.setItem('tarefas', JSON.stringify(tarefas));
 					}
 					limparCampos(); 
 				} 
 	         }
 			 
 			 
-			 function addItemLista(tarefa){
+			 function addItemLista(tarefa, id){
 
 				//com $ acessa a div item-tarefa e a estrutura do li
 				//clone cópia a estrutura atual e appendTo adiciona o item neste clone
 				//removeAttr remove o id do elemento li
+				if(id == null){
+					idItem +=1;
+					tarefa.id = idItem;
+				}
+
 				idItem += 1; 
 				localStorage.setItem("idItem", idItem);
 				var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul').show();
 				//encontra o atributo pela classe e atribui o id incrementando mais um
-				clone.find('.check-tarefa').attr('id','tarefa' +idItem).prop('checked', tarefa.check); 
+				clone.find('.check-tarefa').attr('id','tarefa' + (id != null ? id : idItem)).prop('checked', tarefa.check); 
 				// mudar o titulo 
 				clone.find('.item-title').text(tarefa.texto);
 				clone.find('.item-text').text(tarefa.descricao);
 
 				//configura o botão ver para cada item na lista
 				configBotoesAcao();
-				mensagemTarefaAdicionada();
+				if(id == null){
+					mensagemTarefaAdicionada();	
+				}
+				
 				$('#none-item').hide();
 				
 			 }
