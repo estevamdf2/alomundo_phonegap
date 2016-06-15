@@ -150,8 +150,15 @@
 			var myApp = new Framework7({
 			  material: true
 			}); 
+
+			var idItem = 0;
+			var tarefas = [];
 			
+
+
 			$(document).ready(function () {
+				initLocalStorage();
+				configBotoesAcao ();
 				$('#descricao ').simplyCountable({
 					counter:            '#count',
 					countType:          'characters',
@@ -160,9 +167,27 @@
 					countDirection:     'down',
 					
 				});
-				
-				configBotoesAcao ();
+							
 			});
+
+			function initLocalStorage(){
+
+				if(localStorage.getItem("idItem") == null){
+					//Setando o idItem para ser salvo no localStorage
+					localStorage.setItem("idItem", idItem);
+				} else{
+					idItem = parseInt(localStorage.getItem("idItem"));
+				}
+				
+				//Estrutura para o array de tarefas
+				if(localStorage.getItem("tarefas") == null){
+					//Setando o idItem para ser salvo no localStorage
+					localStorage.setItem("tarefas", JSON.stringify(tarefas));
+				} else{
+					tarefas = JSON.parse(localStorage.getItem("tarefas"));
+					alert(tarefas.length);
+				}
+			}
 
 			//Utilização de mensagens via harware
 			function showAlert() {
@@ -195,6 +220,12 @@
 						myApp.alert("A tarefa não pode estar vazia!", 'Alerta',limparCampos); 
 					} else{
 						tarefa = {check: false, texto: texto, descricao: descricao}
+							tarefas.push(tarefa);
+							alert(tarefas.length);
+							//Stringify pega um objeto qualquer e o transforma em String
+							
+							localStorage.setItem('tarefas', JSON.stringify(tarefas));
+							
 						addItemLista(tarefa);
 						//resetando o valor do campo para vazio
 						
@@ -203,13 +234,14 @@
 				} 
 	         }
 			 
-			 var idItem = 0;
+			 
 			 function addItemLista(tarefa){
 
 				//com $ acessa a div item-tarefa e a estrutura do li
 				//clone cópia a estrutura atual e appendTo adiciona o item neste clone
 				//removeAttr remove o id do elemento li
 				idItem += 1; 
+				localStorage.setItem("idItem", idItem);
 				var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul').show();
 				//encontra o atributo pela classe e atribui o id incrementando mais um
 				clone.find('.check-tarefa').attr('id','tarefa' +idItem).prop('checked', tarefa.check); 
