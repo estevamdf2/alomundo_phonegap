@@ -57,7 +57,7 @@
 				<div class="content-block-title">Lista de tarefas</div>
 				<div class="row">
 				   <div class="col-50">
-				    <a href="#" id='remove-all' class="button button-fill button-red color-red" disabled>Remover todos</a>
+				    <a href="#" id='remove-all' class="button button-fill button-red color-red" disabled onclick="removerTodosItens()">Remover todos</a>
 				  </div>
 				  </div>        
 
@@ -283,6 +283,9 @@
 						$('#remove-all').attr('disabled',true);	
 
 					}
+					if($('#item-tarefa li').length <= 2){
+							$('#none-item').show();
+						}
 			 }
 			 
 			 function removerItem(idItem){
@@ -292,11 +295,22 @@
 
 					//Ao remover todos os itens mostra a mensagem novamente
 
-					if($('#item-tarefa li').length <= 2){
-							$('#none-item').show();
-						}
+					
 						checkBoxesChecked();
 					});
+
+			  }
+
+			  function removerTodosItens(idItem){
+				myApp.confirm("Tem certeza que deseja remover todas as tarefas?", "Remover Tarefas", function () {
+					
+				var boxes = $('input[name=my-checkbox]:checked');
+				boxes.each(function(){
+					$(this).parents('li').remove();
+				});
+
+						checkBoxesChecked();
+				});
 
 			  }
 			 
