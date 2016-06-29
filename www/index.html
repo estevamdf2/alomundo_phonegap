@@ -232,13 +232,16 @@
 							//Stringify pega um objeto qualquer e o transforma em String
 							
 						addItemLista(tarefa, null);
-						//resetando o valor do campo para vazio
-						localStorage.setItem('tarefas', JSON.stringify(tarefas));
+						updateLocalStorageGlobal();
 					}
 					limparCampos(); 
 				} 
 	         }
 			 
+			 function updateLocalStorageGlobal(){
+			 	//resetando o valor do campo para vazio
+				localStorage.setItem('tarefas', JSON.stringify(tarefas));
+			 }
 			 
 			 function addItemLista(tarefa, id){
 
@@ -339,12 +342,22 @@
 					$("#"+idItem).parents("li").remove();
 
 					//Ao remover todos os itens mostra a mensagem novamente
-
+					checkBoxesChecked();
+					//debugger;
+					var itemARemover;
+					//percorrer o array de tarefas
+					$.each(tarefas, function() {
+						if($(this).id == idItem){
+							itemARemover = $(this);
+					    }
 					
-						checkBoxesChecked();
 					});
+					indice = tarefas.indexOf(itemARemover);
+					tarefas.splice(indice,1); // splice retorna um array com os indices removidos
+					updateLocalStorageGlobal(); // atualiza as variáveis locais
+			 });
 
-			  }
+		    }
 
 			  function removerTodosItens(idItem){
 				myApp.confirm("Tem certeza que deseja remover todas as tarefas?", "Remover Tarefas", function () {
