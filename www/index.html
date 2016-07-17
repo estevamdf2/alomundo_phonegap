@@ -153,8 +153,48 @@
 
 			var idItem = 0;
 			var tarefas = [];
-
-
+			var bd;
+			
+			var mainView = myApp.addView('.view-main');
+			
+			/* Função disponibilizada pelo DOM para ver quando o app estiver carregado
+			parametros
+			1º nome da função a ser utilizada pelo cordova. 
+			2º função a ser chamada pelo primeiro parametro quando o dispositivo estiver carregado
+			3º informa que o dispositivo está pronto ou não */
+			document.addEventListener('deviceready', onDeviceReady,false);
+			
+			/*
+			Função que cria o banco de dados.
+			*/
+			
+			function onDeviceReady(){
+				/*
+				Abre o banco dados
+				1º parametro nome banco;
+				2º versão em inteiro ou string;
+				3º descrição do banco
+				4º tamanho em bytes do banco*/
+				bd = window.openDatabase("bd_tarefas",1, "banco de tarefas", 200000);
+			}	bd.transaction(popularBD);
+			
+			function popularBD(tx){
+				//Objeto transaction
+				tx.executeSql("DROP TABLE IF EXISTS OF TB_TAREFA");
+				tx.executeSql("CREATE TB_TAREFA +
+				"(ID INTEGER AUTOINCREMENT, marcado INTEGER, texto TEXT, descricao TEXT )");
+				tx.executeSql("INSERT INTO TB_TAREFA (marcado, texto, descricao) VALUES (0, 'Tarefa1', 'Desc. 1')");
+				tx.executeSql("INSERT INTO TB_TAREFA (marcado, texto, descricao) VALUES (0, 'Tarefa2', 'Desc. 2')");
+			}
+			
+			function erroBD(err){
+				alert('Erro no BD: '+err.message + '\nCodigo: '+err.code);
+			}
+			
+			function sucessoBD(err){
+				alert('Sucesso !');
+			}
+			
 			$(document).ready(function () {
 				initLocalStorage();
 				
