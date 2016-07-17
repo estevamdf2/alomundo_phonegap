@@ -172,13 +172,20 @@
 
 			function initLocalStorage(){
 
-				if(localStorage.getItem("idItem") == null){
-					//Setando o idItem para ser salvo no localStorage
-					localStorage.setItem("idItem", idItem);
-				} else{
-					idItem = parseInt(localStorage.getItem("idItem"));
-				}
+				var listaDados = [
+					{id: 'idItem', valor: idItem}];
+					
+				$.each(listaDados, function () {
 				
+				if(localStorage.getItem(this.id) == null){
+					//Setando o idItem para ser salvo no localStorage
+					localStorage.setItem(this.id, this.value);
+					
+				} else{
+					idItem = parseInt(localStorage.getItem(this.id));
+				}
+				});
+								
 				//Estrutura para o array de tarefas
 				if(localStorage.getItem("tarefas") == null){
 					//Setando o idItem para ser salvo no localStorage
@@ -261,30 +268,16 @@
 				// mudar o titulo 
 				clone.find('.item-title').text(tarefa.texto);
 				clone.find('.item-text').text(tarefa.descricao);
-
 				//configura o botão ver para cada item na lista
 				configBotoesAcao();
+				
 				if(id == null){
-					mensagemTarefaAdicionada();	
+					addMsgNotification("Tarefa adicionada com sucesso", 6000);
 				}
 				
 				$('#none-item').hide();
 				
 			 }
-			 
-			 function mensagemTarefaAdicionada(){
-				myApp.addNotification({
-				title: 'Tarefa adicionada com sucesso!',
-				hold: 2000,
-					button: {
-						text: 'Fechar',
-						color: 'red'
-					},
-					
-				});
-			  }
-				
-				
 			 
 			 function configBotoesAcao(){
 
@@ -336,18 +329,11 @@
 						}
 			 }
 			 
-			 function removerItem(idItem){
-				myApp.confirm("Tem certeza que deseja remover esta tarefa?", "Remover Tarefa", function () {
-					//parents busca o pai dentro desta hierarquia
-					$("#"+idItem).parents("li").remove();
-
-					//Ao remover todos os itens mostra a mensagem novamente
-					checkBoxesChecked();
-					//debugger;
-					var itemARemover;
+			 function removerIdAux(idItem){
+				var itemARemover;
 					//percorrer o array de tarefas
 					$.each(tarefas, function() {
-						if($(this).id == idItem){
+						if($(this).id == idItem.substr(idItem.length -1)){
 							itemARemover = $(this);
 					    }
 					
@@ -355,28 +341,52 @@
 					indice = tarefas.indexOf(itemARemover);
 					tarefas.splice(indice,1); // splice retorna um array com os indices removidos
 					updateLocalStorageGlobal(); // atualiza as variáveis locais
+			}
+			 
+			 function removerItem(idItem){
+				myApp.confirm("Tem certeza que deseja remover esta tarefa?", "Remover Tarefa", function () {
+					//parents busca o pai dentro desta hierarquia
+					$("#"+idItem).parents("li").remove();
+					//Ao remover todos os itens mostra a mensagem novamente
+					checkBoxesChecked();
+					removerIdAux(idItem);
+					addMsgNotification("Tarefa removida com sucesso", 6000);
+					
 			 });
 
 		    }
-
-			  function removerTodosItens(idItem){
+			
+			function removerTodosItens(idItem){
 				myApp.confirm("Tem certeza que deseja remover todas as tarefas?", "Remover Tarefas", function () {
-					
-				var boxes = $('input[name=my-checkbox]:checked');
-				boxes.each(function(){
-					$(this).parents('li').remove();
+					var boxes = $('input[name=my-checkbox]:checked');
+					//Percorre os itens selecionados
+					boxes.each(function(){
+						var id = $(this).attr('id');
+						$(this).parents('li').remove();
+						removerIdAux(id);
+					});
+					checkBoxesChecked();
+					addMsgNotification('Tarefas removidas com sucesso', 6000);
 				});
-
-						checkBoxesChecked();
-				});
-
-			  }
+			}
 			 
-			 function limparCampos(){
+			function limparCampos(){
 				$('#new-tarefa').val('').focus();
 				$('#descricao').val('');
-			 }
-			 
+			}
+			
+			function addMsgNotification(titulo, timeout){
+				myApp.addNotification({
+				title: titulo,
+				hold: timeout,
+					button: {
+						text: 'Fechar',
+						color: 'red'
+					},
+					
+				});
+			}
+			
         </script>
 	</body>
 </html> 
