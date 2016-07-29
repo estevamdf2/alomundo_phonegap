@@ -175,6 +175,7 @@
 				2º versão em inteiro ou string;
 				3º descrição do banco
 				4º tamanho em bytes do banco*/
+				alert("Device ready");
 				bd = window.openDatabase("bd_tarefas",1, "banco de tarefas", 200000);
 			}	bd.transaction(popularBD);
 			
@@ -182,22 +183,21 @@
 				//Objeto transaction
 				tx.executeSql("DROP TABLE IF EXISTS OF TB_TAREFA");
 				tx.executeSql("CREATE TB_TAREFA +
-				"(ID INTEGER AUTOINCREMENT, marcado INTEGER, texto TEXT, descricao TEXT )");
+				"(id INTEGER AUTOINCREMENT, marcado INTEGER, texto TEXT, descricao TEXT )");
 				tx.executeSql("INSERT INTO TB_TAREFA (marcado, texto, descricao) VALUES (0, 'Tarefa1', 'Desc. 1')");
 				tx.executeSql("INSERT INTO TB_TAREFA (marcado, texto, descricao) VALUES (0, 'Tarefa2', 'Desc. 2')");
 			}
 			
 			function erroBD(err){
-				alert('Erro no BD: '+err.message + '\nCodigo: '+err.code);
+				alert("Erro no BD: "+err.message + "\nCodigo: "+err.code);
 			}
 			
 			function sucessoBD(err){
-				alert('Sucesso !');
+				alert("Sucesso !");
+				initBD();
 			}
 			
 			$(document).ready(function () {
-				initLocalStorage();
-				
 				configBotoesAcao ();
 				$('#descricao ').simplyCountable({
 					counter:            '#count',
@@ -210,7 +210,7 @@
 							
 			});
 
-			function initLocalStorage(){
+			function initBD(){
 
 				var listaDados = [
 					{id: 'idItem', valor: idItem}];
@@ -220,21 +220,29 @@
 				if(localStorage.getItem(this.id) == null){
 					//Setando o idItem para ser salvo no localStorage
 					localStorage.setItem(this.id, this.value);
-					
 				} else{
 					idItem = parseInt(localStorage.getItem(this.id));
 				}
 				});
-								
-				//Estrutura para o array de tarefas
-				if(localStorage.getItem("tarefas") == null){
-					//Setando o idItem para ser salvo no localStorage
-					localStorage.setItem("tarefas", JSON.stringify(tarefas));
-				} else{
-					tarefas = JSON.parse(localStorage.getItem("tarefas"));
-					
-				}
-				initListaTarefas();
+				
+				bd.transaction(function(tx){
+					tx.executeSql("SELECT * FROM TB_TAREFA ORDER BY ID", [], listarTarefasBD, erroBD);
+				});
+
+				//initListaTarefas();
+			}
+
+			function listarTarefasBD(tx, resultados){
+				if(resultados.rows.length > 0){
+					for (var i = 0; i <resultados.rows.length; i++) {
+						alert("id: "+resultados.rows.item(i).id);
+						var tarefa = {};
+						tarefa.id = resultados.rows.item(i).id;				
+						tarefa.check = resultados.rows.item(i).marcado;
+						tarefa.texto = resultados.rows.item(i).texto;
+						tarefa.descricao = resultados.rows.item(i).descricao;
+						addItemLista(tarefa, tarefa.id);
+					}
 			}
 
 			function initListaTarefas(){
