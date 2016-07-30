@@ -13,22 +13,21 @@
     <link rel="stylesheet" href="framework7/css/framework7.material.min.css">
     <!-- Path to Framework7 color related styles, Material Theme -->
     <link rel="stylesheet" href="framework7/css/framework7.material.colors.min.css">
-    <!-- Path to your custom app styles correção do link para framework7/css/my-app.css-->
+    <!-- Path to your custom app styles-->
     <link rel="stylesheet" href="framework7/css/my-app.css">
-	<style type="text/css">
-		.item-text{
-			max-width:150px;
-		}
-		.item-completado{
-			text-decoration:line-through;
+	<style type='text/css'>
+	    .item-text {
+			max-width: 150px;
 		}
 		
+		.item-completado {
+			text-decoration: line-through;
+		}
 	</style>
-  </head>
-
-  <body class="theme-green">
+	</head>
+  <body class='theme-green'>
     <!-- Views -->
-    <div class="views" >
+    <div class="views">
       <!-- Your main view, should have "view-main" class -->
       <div class="view view-main">
         <!-- Pages container, because we use fixed navbar and toolbar, it has additional appropriate classes-->
@@ -39,7 +38,7 @@
             <!-- Top Navbar. In Material theme it should be inside of the page-->
             <div class="navbar">
               <div class="navbar-inner">
-                <div class="center">DevMedia - Tarefas</div>
+                <div class="center">DevMedia App - Tarefas</div>
               </div>
             </div>
  
@@ -47,386 +46,300 @@
             <div class="toolbar">
               <div class="toolbar-inner">
                 <!-- Toolbar links -->
-                <link href="about.html" class="link">Link 1>
+                <a href="#" class="link">Link 1</a>
                 <a href="#" class="link">Link 2</a>
               </div>
             </div>
  
             <!-- Scrollable page content -->
             <div class="page-content">
-				<div class="content-block-title">Lista de tarefas</div>
-				<div class="row">
-				   <div class="col-50">
-				    <a href="#" id='remove-all' class="button button-fill button-red color-red" disabled onclick="removerTodosItens()">Remover todos</a>
-				  </div>
-				  </div>        
-
-					<div class='list-block media-list' id='item-tarefa'>
-					 <ul>
-						<li id="none-item">
-					 		<label class="label-checkbox item-content">
-								<div class="item-inner">
-								  <div class="item-title-row">
-									<div class="color-orange item-title">Nenhum item adicionado...</div>
-						    	  </div>
-						    	</div>
-							</label>
-					 	</li>
-
-						<li style="display:none" id='primeiro'>
-							<label class="label-checkbox item-content">
-								<input type="checkbox" name="my-checkbox" class='check-tarefa' id='tarefa0'>
-								  <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
-								  <div class="item-inner">
-									  <div class="item-title-row">
-										<div class="item-title">Facebook</div>
-											<div class="item-after">
-												<a href="#" class="button button-fill button-raised btn-ver">
-													<img src="img/eye.png" />
-												</a>
-												<div class="item-after">
-													<a href="#" class="button button-fill button-raised btn-remover color-red" style="padding-top:5px">
-														<img src="img/remove.png" />
-													</a>
-												</div>
-											</div>
-										</div>
-										<div class="item-text"></div>
-									</div>
-							</label>
-						</li>
-					  </ul>
-			    </div>
+				<div class="content-block-title">Lista de Tarefas</div>
+				<div class="content-block">
+					<div class="row">
+					  <div class="col-50">
+						<a href="#" class="button button-fill button-red color-red" id='remove-all' disabled>Remover Todos</a>
+					  </div>
+					</div>
+				</div>
+				<div class="list-block media-list" id='item-tarefa'>
+				  <ul>
+					<li id='none-item'>
+						<label class="label-checkbox item-content">
+						<div class="item-inner">
+						  <div class="item-title-row">
+							<div class="color-orange item-title">Nenhum item adicionado...</div>
+						  </div>
+						</div>
+					  </label>
+					</li>
+					<li style='display:none' id='primeiro'>
+					  <label class="label-checkbox item-content">
+						<input type="checkbox" name="my-checkbox" class='check-tarefa' id='tarefa0'>
+						<div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+						<div class="item-inner">
+						  <div class="item-title-row">
+							<div class="item-title">Facebook</div>
+							<div class="item-after">
+								<a href='#' class="button button-fill button-raised btn-ver">
+									<img src='img/eye.png'/>
+								</a>
+								<div class="item-after">
+									<a href='#' class="button color-red button-fill button-raised btn-remover" style='padding-top:5px'>
+										<img src='img/remove.png'/>
+									</a>
+								</div>
+							</div>
+						  </div>
+						  <div class="item-text"></div>
+						</div>
+					  </label>
+					</li>
+				  </ul>
+				</div>
 			
-				<div class="content-block">	
+               <div class="content-block">
 					<div class="list-block">
 						<div class="item-content">
 						<div class="item-inner">
+						  <div class="item-input">
+							<input type='text' id='new-tarefa' placeholder='Nova tarefa...'/>
+						  </div>
+						</div>
+						</div>
+						<div class="item-content">
+							<div class="item-inner">
 								<div class="item-input">
-									  <input id="new-tarefa" type="text" placeholder="Nova tarefa...">
+								  <textarea id='descricao' placeholder='Descrição...'></textarea>
 								</div>
+							</div>
 						</div>
 					</div>
 					
-        		    <div class="item-content">
-						<div class="item-inner">
-							<div class="item-input">
-							  <textarea id='descricao' placeholder="Descrição ...."></textarea>
-						  </div>
-						</div>
-    				</div>
-				 </div>
-				
-					 Restam <span id="count"></span> chars.
-				
-	                    <a href="#" class="button button-fill color-green" onclick='criarNovaTarefa()'>Add tarefa</a>
-	            
-				</div
-            </div>
-          </div>
-        </div>
-	</div>
-</div>
-              <!-- Link to another page -->
-              <a href="about.html">About app</a>
+					Restam <span id='cont'></span> chars.
+					
+					<a href='#' class="button button-fill button-raised" onclick='criarNovaTarefa()'>Add Tarefa</a>
+				</div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <!-- Path to Framework7 Library JS-->
-	<!-- cordova js e gerado qdo o projeto for compilado -->
-	<script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/jquery-2.2.3.js"></script>
-	
-	<!-- contar caracteres de campo texto -->
-	<script type="text/javascript" src="js/jquery.simplyCountable.js"></script>
-	
-	<script type="text/javascript" src="framework7/js/framework7.min.js"></script>
+    <script type="text/javascript" src="framework7/js/framework7.min.js"></script>
     <!-- Path to your app js-->
     <script type="text/javascript" src="framework7/js/my-app.js"></script>
-     <script type="text/javascript">
-            //app.initialize();
-			var myApp = new Framework7({
-			  material: true
-			}); 
-			var mainView = myApp.addView('.view-main');
+    <script type="text/javascript" src="js/jquery.simplyCountable.js"></script>
+	<script type="text/javascript">
+		var myApp = new Framework7({
+		  material: true
+		}); 
+		var mainView = myApp.addView('.view-main');
+		
+		document.addEventListener('deviceready', onDeviceReady, false);
+		
+		var bd;
+		function onDeviceReady() {
+			alert('Device ready!')
+			bd = window.openDatabase('bd_tarefas', 1, 'Base de Tarefas', 200000);
+			bd.transaction(popularBD, erroCB, sucessoCB);
+		}
+		
+		function popularBD(tx) {
+			tx.executeSql('DROP TABLE IF EXISTS TB_TAREFA');
+			tx.executeSql('CREATE TABLE TB_TAREFA ' +
+				'(id INTEGER PRIMARY KEY AUTOINCREMENT, marcado INTEGER, texto TEXT, descricao TEXT)');
+			tx.executeSql('INSERT INTO TB_TAREFA(marcado, texto, descricao) VALUES (0, "Tarefa 1", "Desc 1")');
+			tx.executeSql('INSERT INTO TB_TAREFA(marcado, texto, descricao) VALUES (0, "Tarefa 2", "Desc 2")');
+		}
+		
+		function erroCB(err) {
+			alert('Erro no BD: ' + err.message + '\nCodigo: ' + err.code);
+		}
+		
+		function sucessoCB() {
+			alert('Sucesso!');
+			initBD();
+		}
+		
+		var idItem = 0;
+		var tarefas = [];
+		
+		$(document).ready(function () {
+			configBotoesAcao();
 			
-			
-						
-			/* Função disponibilizada pelo DOM para ver quando o app estiver carregado
-			parametros
-			1º nome da função a ser utilizada pelo cordova. 
-			2º função a ser chamada pelo primeiro parametro quando o dispositivo estiver carregado
-			3º informa que o dispositivo está pronto ou não */
-			document.addEventListener('deviceready', onDeviceReady,false);
-			
-			
-			/*
-				Abre o banco dados
-				1º parametro nome banco;
-				2º versão em inteiro ou string;
-				3º descrição do banco
-				4º tamanho em bytes do banco*/
-			var bd;
-			function onDeviceReady(){
-				
-				alert('Device ready!');
-				bd = window.openDatabase('bd_tarefas',1, 'banco de tarefas', 200000);
-			}	bd.transaction(popularBD, erroBD, sucessoBD); // provavel linha erro
-			
-			function popularBD(tx){
-				//Objeto transaction
-				tx.executeSql('DROP TABLE IF EXISTS OF TB_TAREFA');
-				tx.executeSql('CREATE TB_TAREFA +
-				'(id INTEGER AUTOINCREMENT, marcado INTEGER, texto TEXT, descricao TEXT )');
-				tx.executeSql('INSERT INTO TB_TAREFA (marcado, texto, descricao) VALUES (0, "Tarefa1", "Desc. 1")');
-				tx.executeSql('INSERT INTO TB_TAREFA (marcado, texto, descricao) VALUES (0, "Tarefa2", "Desc. 2")');
-			}
-			
-			function erroBD(err){
-				alert('Erro no BD: '+err.message + '\nCodigo: '+err.code);
-			}
-			
-			function sucessoBD(){
-				alert('Sucesso !');
-			}
-			
-			var idItem = 0;
-			var tarefas = [];
-			
-			$(document).ready(function () {
-				initLocalStorage();
-				
-				configBotoesAcao ();
-				$('#descricao ').simplyCountable({
-					counter:            '#count',
-					countType:          'characters',
-					maxCount:           60,
-					strictMax:          true, //restringir apos o maximo
-					countDirection:     'down',
-					
-				});
-							
+			$('#descricao').simplyCountable({
+				counter:            '#cont',
+				countType:          'characters',
+				maxCount:           60,
+				strictMax:          true,
+				countDirection:     'down'
 			});
-
-			function initLocalStorage(){
-
-				var listaDados = [
-					{id: 'idItem', valor: idItem}];
-					
-				$.each(listaDados, function () {
-				
-				if(localStorage.getItem(this.id) == null){
-					//Setando o idItem para ser salvo no localStorage
-					localStorage.setItem(this.id, this.value);
-					
-				} else{
+		});
+		
+		function initBD() {
+			var listaDados = [
+				{id: 'idItem', valor: idItem}];
+		
+			$.each(listaDados, function() {
+				if (localStorage.getItem(this.id) == null) {
+					localStorage.setItem(this.id, this.valor);
+				} else {
 					idItem = parseInt(localStorage.getItem(this.id));
 				}
-				});
-								
-				//Estrutura para o array de tarefas
-				if(localStorage.getItem("tarefas") == null){
-					//Setando o idItem para ser salvo no localStorage
-					localStorage.setItem('tarefas', JSON.stringify(tarefas));
-				} else{
-					tarefas = JSON.parse(localStorage.getItem("tarefas"));
-					
-				}
-				initListaTarefas();
-			}
-
-			function initListaTarefas(){
-				$.each(tarefas, function(){
-					addItemLista(this, $(this).attr("id"));
-				});
-			}
-
-			//Utilização de mensagens via harware
-			function showAlert() {
-				
-				navigator.notification.confirm(
-					'You are the winner!',  // message
-					null,         // callback
-					'Game Over',            // title
-					['Restart', 'Exit']                  // buttonName
-				);
-			}
-
-            function criarNovaTarefa(){
-                
-				var tarefa = {};
-				
-				//var descricao = prompt("Digite a tarefa!", "");
-				var texto = $('#new-tarefa').val();
-				var descricao  = $('#descricao').val();
-				
-				if(texto != null){
-					//trim() não permite a inclusão de tarefas vazias
-					if(texto.trim() == ''){
-						//alert("A tarefa não pode estar vazia!");
-						/*
-						usando alerta nativo pelo framework 7
-						segundo parametro e o titulo por padrão texto
-						'framework7'
-						*/
-						myApp.alert("A tarefa não pode estar vazia!", 'Alerta',limparCampos); 
-					} else{
-						tarefa = {check: false, texto: texto, descricao: descricao}
-							tarefas.push(tarefa);
-							
-							//Stringify pega um objeto qualquer e o transforma em String
-							
-						addItemLista(tarefa, null);
-						updateLocalStorageGlobal();
-					}
-					limparCampos(); 
-				} 
-	         }
-			 
-			 function updateLocalStorageGlobal(){
-			 	//resetando o valor do campo para vazio
-				localStorage.setItem('tarefas', JSON.stringify(tarefas));
-			 }
-			 
-			 function addItemLista(tarefa, id){
-
-				//com $ acessa a div item-tarefa e a estrutura do li
-				//clone cópia a estrutura atual e appendTo adiciona o item neste clone
-				//removeAttr remove o id do elemento li
-				if(id == null){
-					idItem +=1;
-					tarefa.id = idItem;
-				}
-
-				idItem += 1; 
-				localStorage.setItem("idItem", idItem);
-				var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul').show();
-				//encontra o atributo pela classe e atribui o id incrementando mais um
-				clone.find('.check-tarefa').attr('id','tarefa' + (id != null ? id : idItem)).prop('checked', tarefa.check); 
-				// mudar o titulo 
-				clone.find('.item-title').text(tarefa.texto);
-				clone.find('.item-text').text(tarefa.descricao);
-				//configura o botão ver para cada item na lista
-				configBotoesAcao();
-				
-				if(id == null){
-					addMsgNotification("Tarefa adicionada com sucesso", 6000);
-				}
-				
-				$('#none-item').hide();
-				
-			 }
-			 
-			 function configBotoesAcao(){
-
-				$('input[name=my-checkbox]').change(function () {
-					if($(this).is(':checked')){
-						$(this).siblings('.item-inner').addClass('item-completado');
-
-					} else{
-						$(this).siblings('.item-inner').removeClass('item-completado');
-					}
-						checkBoxesChecked();
-				});
-
-				 //each itera sobre cada array
-
-				  $('#item-tarefa li').each(function () {
-					//Recuperando os Ids das tarefas
-					var id = $(this).find('.check-tarefa').attr('id');
-					$(this).find('.btn-ver').unbind('click').click(function () {
-						// siblings mapeia todas as funções no mesmo nível do seletor
-						var texto = $('#' +id).siblings('.item-inner').find('.item-title').text();
-						var descricao = $('#' +id).siblings('.item-inner').find('.item-text').text();
-						
-						//mostrando o texto no alerta
-						myApp.alert(descricao, texto,limparCampos);
-						
-					}); 
-					
-					$(this).find('.btn-remover').unbind('click').click(function () {
-						removerItem(id);
-					});
-					
-				  });
-			 }
-
-			 function checkBoxesChecked(){
-
-			 	if ($('input[name=my-checkbox]:checked').length > 0) {
-						//desabilita o atributo disabled
-						$('#remove-all').removeAttr('disabled');	
-
-					} else{
-						//habilita o atributo disabled
-						$('#remove-all').attr('disabled',true);	
-
-					}
-					if($('#item-tarefa li').length <= 2){
-							$('#none-item').show();
-						}
-			 }
-			 
-			 function removerIdAux(idItem){
-				var itemARemover;
-					//percorrer o array de tarefas
-					$.each(tarefas, function() {
-						if($(this).id == idItem.substr(idItem.length -1)){
-							itemARemover = $(this);
-					    }
-					
-					});
-					indice = tarefas.indexOf(itemARemover);
-					tarefas.splice(indice,1); // splice retorna um array com os indices removidos
-					updateLocalStorageGlobal(); // atualiza as variáveis locais
-			}
-			 
-			 function removerItem(idItem){
-				myApp.confirm("Tem certeza que deseja remover esta tarefa?", "Remover Tarefa", function () {
-					//parents busca o pai dentro desta hierarquia
-					$("#"+idItem).parents("li").remove();
-					//Ao remover todos os itens mostra a mensagem novamente
-					checkBoxesChecked();
-					removerIdAux(idItem);
-					addMsgNotification("Tarefa removida com sucesso", 6000);
-					
-			 });
-
-		    }
+			});
 			
-			function removerTodosItens(idItem){
-				myApp.confirm("Tem certeza que deseja remover todas as tarefas?", "Remover Tarefas", function () {
-					var boxes = $('input[name=my-checkbox]:checked');
-					//Percorre os itens selecionados
-					boxes.each(function(){
-						var id = $(this).attr('id');
-						$(this).parents('li').remove();
-						removerIdAux(id);
-					});
-					checkBoxesChecked();
-					addMsgNotification('Tarefas removidas com sucesso', 6000);
-				});
+			bd.transaction(function(tx) {
+				tx.executeSql('SELECT * FROM TB_TAREFA ORDER BY ID', [], listarTarefasBD, erroCB);
+			});
+			// initListaTarefas();
+		}
+		
+		function listarTarefasBD(tx, resultados) {
+			if (resultados.rows.length > 0) {
+				for (var i = 0; i < resultados.rows.length; i++) {
+					var tarefa = {};
+					tarefa.id = resultados.rows.item(i).id;
+					tarefa.check = resultados.rows.item(i).marcado;
+					tarefa.texto = resultados.rows.item(i).texto;
+					tarefa.descricao = resultados.rows.item(i).descricao;
+					addItemLista(tarefa, tarefa.id);
+				}
 			}
-			 
-			function limparCampos(){
-				$('#new-tarefa').val('').focus();
-				$('#descricao').val('');
+		}
+		
+		function initListaTarefas() {
+			$.each(tarefas, function() {
+				addItemLista(this, $(this).attr('id'));
+			});
+		}
+	
+		function criarNovaTarefa() {
+			var tarefa = {};
+			
+			var texto = $('#new-tarefa').val();
+			var descricao = $('#descricao').val();
+			if (texto != null) {
+				if (texto.trim() == '') {
+					myApp.alert('A tarefa não pode estar vazia!', 'Alerta', limparCampos);
+				} else {
+					tarefa = {id: 0, check: false, texto: texto, descricao: descricao};
+					tarefas.push(tarefa);
+					addItemLista(tarefa, null);
+					updateLocalStorageGlobal();
+				}
+				limparCampos();
+			}
+		}
+		
+		function updateLocalStorageGlobal() {
+			localStorage.setItem('tarefas', JSON.stringify(tarefas));
+		}
+		
+		function addItemLista(tarefa, id) {
+			if (id == null) {
+				idItem += 1;
+				tarefa.id = idItem;
+				localStorage.setItem('idItem', idItem);
+			}
+			var clone = $('#item-tarefa li#primeiro').clone().removeAttr('id').appendTo('#item-tarefa ul').show();
+			clone.find('.check-tarefa').attr('id', 'tarefa' + (id != null ? id : idItem)).prop('checked', tarefa.check);
+			clone.find('.item-title').text(tarefa.texto);
+			clone.find('.item-text').text(tarefa.descricao);
+			configBotoesAcao();
+			if (id == null) {
+				addMsgNotification('Tarefa adicionada com sucesso!', 6000);
+			}
+			$('#none-item').hide();
+		}
+		
+		function configBotoesAcao() {
+			$('input[name=my-checkbox]').change(function () {
+				if ($(this).is(':checked')) {
+					$(this).siblings('.item-inner').addClass('item-completado');
+				} else {
+					$(this).siblings('.item-inner').removeClass('item-completado');
+				}
+				checkBoxesChecked();
+			});
+			
+			$('#item-tarefa li').each(function () {
+				var id = $(this).find('.check-tarefa').attr('id');
+				$(this).find('.btn-ver').unbind('click').click(function () {
+					var texto = $('#' + id).siblings('.item-inner').find('.item-title').text();
+					var descricao = $('#' + id).siblings('.item-inner').find('.item-text').text();
+					myApp.alert(descricao, texto, limparCampos);
+				});
+				$(this).find('.btn-remover').unbind('click').click(function () {
+					removerItem(id);
+				});
+			});
+			
+			$('#remove-all').unbind('click').click(function(){removerTodosItens()});
+		}
+		
+		function checkBoxesChecked() {
+			if ($('input[name=my-checkbox]:checked').length > 0) {
+				$('#remove-all').removeAttr('disabled');
+			} else {
+				$('#remove-all').attr('disabled', true);
 			}
 			
-			function addMsgNotification(titulo, timeout){
-				myApp.addNotification({
+			if ($('#item-tarefa li').length <= 2) {
+				$('#none-item').show();
+			}
+		}
+		
+		function removerItem(idItem) {
+			myApp.confirm('Tem certeza que deseja remover essa tarefa?', 'Remover Tarefa', function() {
+				$('#' + idItem).parents('li').remove();
+				checkBoxesChecked();
+				removerIdAux(idItem);
+				addMsgNotification('Tarefa removida com sucesso!', 6000);
+			});
+		}
+		
+		function removerIdAux(idItem) {
+			var itemARemover;
+			$.each(tarefas, function() {
+				if (this.id == idItem.substr(idItem.length - 1)) {
+					itemARemover = this;
+				}
+			});
+			indice = tarefas.indexOf(itemARemover);
+			tarefas.splice(indice, 1);
+			updateLocalStorageGlobal();
+		}
+		
+		function removerTodosItens() {
+			myApp.confirm('Tem certeza que deseja remover todas as tarefas?', 'Remover Tarefas', function() {
+				var boxes = $('input[name=my-checkbox]:checked');
+				boxes.each(function() {
+					var id = $(this).attr('id');
+					$(this).parents('li').remove();
+					removerIdAux(id);
+				});
+				checkBoxesChecked();
+				addMsgNotification('Tarefas removidas com sucesso!', 6000);
+			});
+		}
+		
+		function limparCampos() {
+			$('#new-tarefa').val('').focus();
+			$('#descricao').val('');
+		}
+		
+		function addMsgNotification(titulo, timeout) {
+			myApp.addNotification({
 				title: titulo,
 				hold: timeout,
-					button: {
-						text: 'Fechar',
-						color: 'red'
-					},
-					
-				});
-			}
-			
-        </script>
-	</body>
-</html> 
+				button: {
+					text: 'Fechar',
+					color: 'red'
+				}
+			});
+		}
+	</script>
+  </body>
+</html>
